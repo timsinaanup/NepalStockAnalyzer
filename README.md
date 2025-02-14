@@ -3,3 +3,7 @@ A comprehensive tool designed to simplify stock selection in the Nepal Stock Exc
 
 # API
 I used API of sharehub and with request method, after the extraction of Json, I used pandas to create a dataframe to store only required data initially. (Security Name, Symbol, and Sector)
+
+# DF
+
+After creating df, I imported it in another file for woth with each stocks seperately. 

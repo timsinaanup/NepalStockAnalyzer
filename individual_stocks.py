@@ -1,14 +1,15 @@
-import requests
-import json
+from fetch_data import get_stock_data
 import pandas as pd
+import requests as rq
 
-url = "https://sharehubnepal.com/live/api/v2/nepselive/live-nepse"
-response = requests.get(url)
+# loading data in df
+stocks_df = get_stock_data()
 
-if response.status_code == 200:
-    json_data = response.json()
-    df = pd.DataFrame(json_data)
-    print(df['data'])
-else:
-    print(f"Failed to fetch data. Status Code: {response.status_code}")
+# Individual Stocks
 
+stock_list = stocks_df['symbol'].to_list()
+
+individual_stocks_url = "https://sharehubnepal.com/company/"
+
+response = rq.get(individual_stocks_url+stock_list[0])
+print(response.status_code)
