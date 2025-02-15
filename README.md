@@ -6,6 +6,12 @@ A comprehensive tool designed to simplify stock selection in the Nepal Stock Exc
 
 This project is currently in the development phase. Features and functionalities are being actively improved.
 
+# keywords
+
+- General Data: Normal overview that is looked at superficially.
+- Ownership Structure: Breakdown of stock ownership among different holders.
+- Fundamentals: Quarterly reports data and key financial indicators.
+
 ## API
 
 The tool utilizes the API from ShareHub Nepal to fetch real-time stock market data. Data is extracted using the requests module and processed into a structured format using Pandas.
