@@ -29,5 +29,3 @@ def get_stock_data():
     else:
         print(f"Failed to fetch data. Status Code: {response.status_code}")
         return None
-
-print(get_stock_data())
