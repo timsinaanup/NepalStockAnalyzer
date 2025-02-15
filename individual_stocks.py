@@ -1,35 +1,31 @@
-from fetch_data import get_stock_data
-import pandas as pd
-import requests as rq
-from bs4 import BeautifulSoup as bs
+from fetch_data import get_stock_namelist
+from config import rq, bs, pd
 
 def main():
-    # Loading data in df
-    stocks_df = get_stock_data()
-
-    # Individual Stocks
-    stock_list = stocks_df['symbol'].to_list()
-
+    
+    stock_name = get_stock_namelist()[2]
     individual_stocks_url = "https://sharehubnepal.com/company/"
 
-    response = rq.get(individual_stocks_url + stock_list[2])
+    response = rq.get(individual_stocks_url + stock_name)
     if response.status_code == 200:
         soup = bs(response.text, 'html.parser')
         
-        fundamental_data = Fundamental_Signals(soup)
+        general_data = General_Signals(soup)
         share_proportion = listed_share_proportion(soup)
-        print("Share Proportion Data:", share_proportion)
 
+        # Merging both dictionaries
+        combined_data = {**general_data, **share_proportion}  
 
-        # Extracting fundamental signals from the soup
-        fundamental_df = pd.DataFrame(list(fundamental_data.items()), columns=['Analytical Name', 'Value'])
-        return fundamental_df        
+        # Creating a DataFrame
+        stock_overview_df = pd.DataFrame(combined_data.items(), columns=['Metric', 'Value'])
+
+        return stock_overview_df
     else:
         print(f"Unable to fetch data with response code = {response.status_code}")
 
 
-def Fundamental_Signals(soup):
-    Fundamental_data = {}
+def General_Signals(soup):
+    General_data = {}
 
     rows = soup.find_all('tr')
 
@@ -42,10 +38,10 @@ def Fundamental_Signals(soup):
             analytical_value = td_elements[1].text.strip()  # Second column (value) [500.05]
 
             # Adding extracted value to dictionary
-            Fundamental_data[analytical_name] = analytical_value
+            General_data[analytical_name] = analytical_value
 
     
-    return Fundamental_data
+    return General_data
 
 def listed_share_proportion(soup):
     # Finding the div with class "space-y-1 that was child of another div"
@@ -74,4 +70,4 @@ def listed_share_proportion(soup):
     return ownership_structure
 
 
-main()
+print(main())
