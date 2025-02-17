@@ -25,3 +25,9 @@ soup = bs(page_source, 'html.parser')
 
 
 table = soup.find('table', class_="min-w-max w-full caption-bottom border-collapse") 
+thead = table.find('thead', class_= "dark:bg-dark-container bg-white dark:text-text-light border-b h-8 text-sm font-bold uppercase")
+tbody = table.find('tbody', class_="dark:text-text-light text-black font-bold text-xs")
+th_tr = thead.find('tr', class_ = 'hover:bg-muted/50 border-b dark:border-gray-700 border-gray-200')
+
+headers = [th.text.strip() for th in th_tr.find_all('th')]  # Extract column headers
+
