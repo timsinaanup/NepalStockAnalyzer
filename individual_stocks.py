@@ -5,20 +5,17 @@ from scraper import get_json , get_soup
 def main():
     
     stock_name = get_stock_namelist()[0]
+
+    divident_details = divident_history(stock_name)
+    general_data = General_Signals(stock_name)
+    share_proportion = listed_share_proportion(stock_name)
+    
+    print(share_proportion)
+
+def General_Signals(stock_name):
     url = "https://sharehubnepal.com/company/"+stock_name
     soup = get_soup(url)
-    general_data = General_Signals(soup)
-    share_proportion = listed_share_proportion(soup)
 
-    # Merging both dictionaries
-    combined_data = {**general_data, **share_proportion}  
-
-    # Creating a DataFrame
-    stock_overview_df = pd.DataFrame(combined_data.items(), columns=['Metric', 'Value'])
-
-    return stock_overview_df
-
-def General_Signals(soup):
     General_data = {}
 
     rows = soup.find_all('tr')
@@ -37,8 +34,10 @@ def General_Signals(soup):
     
     return General_data
 
-def listed_share_proportion(soup):
+def listed_share_proportion(stock_name):
     # Finding the div with class "space-y-1 that was child of another div"
+    url = "https://sharehubnepal.com/company/"+stock_name
+    soup = get_soup(url)
     ownership_structure = {}
     proportion_table = (soup.find_all('div',class_="w-full dark:bg-dark-container bg-white md:p-5 p-2 rounded-md"))[2].find_all('div',class_="space-y-1")
     if len(proportion_table) == 4:
@@ -64,11 +63,14 @@ def listed_share_proportion(soup):
     return ownership_structure
 
 
-def divident_history():
-    stock_name = get_stock_namelist()[0]
+def divident_history(stock_name):
     url = f"https://sharehubnepal.com/data/api/v1/dividend?symbol={stock_name}&limit=50"
     dividents_json = get_json(url)
-    print(dividents_json)
+    content_list = dividents_json.get('data', {}).get('content', [])  # Extract 'content' list
+    dividents_df = pd.DataFrame(content_list)
+    required_divident_details = ((dividents_df[['symbol','bonus', 'cash', 'total','listingDate','fiscalYear','status']])).to_json()
+    return required_divident_details
 
 
-divident_history()
+
+main()
