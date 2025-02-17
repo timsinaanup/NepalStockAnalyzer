@@ -10,7 +10,7 @@ def main():
     general_data = General_Signals(stock_name)
     share_proportion = listed_share_proportion(stock_name)
     
-    print(share_proportion)
+    return None
 
 def General_Signals(stock_name):
     url = "https://sharehubnepal.com/company/"+stock_name
