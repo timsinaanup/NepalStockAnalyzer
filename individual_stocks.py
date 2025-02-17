@@ -1,28 +1,22 @@
 from fetch_data import get_stock_namelist
 from config import rq, bs, pd
+from scraper import get_json , get_soup
 
 def main():
     
-    stock_name = get_stock_namelist()[2]
-    individual_stocks_url = "https://sharehubnepal.com/company/"
+    stock_name = get_stock_namelist()[0]
+    url = "https://sharehubnepal.com/company/"+stock_name
+    soup = get_soup(url)
+    general_data = General_Signals(soup)
+    share_proportion = listed_share_proportion(soup)
 
-    response = rq.get(individual_stocks_url + stock_name)
-    if response.status_code == 200:
-        soup = bs(response.text, 'html.parser')
-        
-        general_data = General_Signals(soup)
-        share_proportion = listed_share_proportion(soup)
+    # Merging both dictionaries
+    combined_data = {**general_data, **share_proportion}  
 
-        # Merging both dictionaries
-        combined_data = {**general_data, **share_proportion}  
+    # Creating a DataFrame
+    stock_overview_df = pd.DataFrame(combined_data.items(), columns=['Metric', 'Value'])
 
-        # Creating a DataFrame
-        stock_overview_df = pd.DataFrame(combined_data.items(), columns=['Metric', 'Value'])
-
-        return stock_overview_df
-    else:
-        print(f"Unable to fetch data with response code = {response.status_code}")
-
+    return stock_overview_df
 
 def General_Signals(soup):
     General_data = {}
@@ -70,4 +64,11 @@ def listed_share_proportion(soup):
     return ownership_structure
 
 
-print(main())
+def divident_history():
+    stock_name = get_stock_namelist()[0]
+    url = f"https://sharehubnepal.com/data/api/v1/dividend?symbol={stock_name}&limit=50"
+    dividents_json = get_json(url)
+    print(dividents_json)
+
+
+divident_history()
