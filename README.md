@@ -11,10 +11,12 @@ This project is currently in the development phase. Features and functionalities
 - General Data: Normal overview that is looked at superficially.
 - Ownership Structure: Breakdown of stock ownership among different holders.
 - Fundamentals: Quarterly reports data and key financial indicators.
+- Dividend History: Record of past dividend payouts and trends.
+- Share Proportion: Analysis of how shares are distributed among various stakeholders.
 
 ## API
 
-The tool utilizes the API from ShareHub Nepal to fetch real-time stock market data. Data is extracted using the requests module and processed into a structured format using Pandas.
+The tool utilizes the API from ShareHub Nepal to fetch real-time stock market data. Data is extracted using the <b>requests</b> module and processed into a structured format using Pandas.
 
 ## Steps:
 
@@ -34,6 +36,12 @@ After creating the initial DataFrame, it is imported into another script to proc
 
 - Ownership Breakdown: Scrapes shareholder proportions from the stock details page.
 
+- Dividend History: Tracks dividend payouts to analyze stock performance trends.
+
+- Share Proportion: Examines how shares are distributed among promoters, institutions, and the public.
+
+- General Data Processing: Handles all stock-related data for further insights.
+
 - Data Storage & Processing: Maintains stock data efficiently for machine learning applications.
 
 ## Future Enhancements
@@ -43,6 +51,13 @@ After creating the initial DataFrame, it is imported into another script to proc
 - Web Interface: Develop a user-friendly UI for visualization and easier access to insights.
 
 - Automated Data Updates: Periodic updates to maintain up-to-date stock information.
+
+
+## Project Structure
+
+- config.py: Contains all necessary imports and configuration settings.
+
+- scraper.py: Implements functions such as get_json() and get_soup() to fetch and process data efficiently.
 
 Stay tuned for further updates! 🚀
 
