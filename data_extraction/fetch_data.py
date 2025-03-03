@@ -1,5 +1,5 @@
-from config import rq, pd, json
-from scraper import get_json
+from config import pd
+from .scraper import get_json
 
 def get_stock_namelist():
     stocks_df = get_stock_data()

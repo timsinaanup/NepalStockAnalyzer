@@ -1,6 +1,5 @@
-from scraper import get_json
-from fetch_data import get_stock_namelist
-from config import pd,bs
+from .scraper import get_json
+from .fetch_data import get_stock_namelist
 
 def script_fundamentals():
     script_name = get_stock_namelist()[1]

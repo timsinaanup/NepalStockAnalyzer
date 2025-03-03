@@ -1,6 +1,6 @@
-from fetch_data import get_stock_namelist
-from config import rq, bs, pd
-from scraper import get_json , get_soup
+from .fetch_data import get_stock_namelist
+from config import pd
+from .scraper import get_json , get_soup
 
 def main():
     
